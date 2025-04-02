@@ -88,6 +88,7 @@ class ReservationController extends AbstractController
             $reservation->setIdStationArrivee($idStationFin);
             $reservation->setType($request->get('type'));
 
+
             /** @var StationRepository $stationRepository */
             $stationRepository = $this->entityManager->getRepository(Station::class);
             $startLat =  $stationRepository->getLatLonById($idStationDepart)[0]["lat"];
@@ -96,6 +97,16 @@ class ReservationController extends AbstractController
             $endLng =  $stationRepository->getLatLonById($idStationFin)[0]["lon"];
             $distance_km = $this->calculateDistanceInKm($startLat, $startLng, $endLat, $endLng);
             $reservation->setDistanceKm($distance_km);
+
+            $conso_co2 = 0.0;
+            if ($request->get('type') == "ebike") {
+                $conso_co2 = 15.0;
+            } else {
+                $conso_co2 = 5.0;
+            }
+            $empreinte_carbonne = $conso_co2 * $distance_km;
+            $reservation->setEmpreinteCarbonne($empreinte_carbonne);
+
 
             // Vérifier que l'heure de fin est après l'heure de début
             if ($reservation->getHeureFin() < $reservation->getHeureDebut()) {

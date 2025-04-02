@@ -56,6 +56,7 @@ class SeeReservationsController extends AbstractController
                 "idStationArrivee" => $stationRepository->getStationNameById($res->getIdStationArrivee())[0]["name"],
                 "type" => $res->getClearType($res->getType()),
                 "distance_km" => $res->getDistanceKm(),
+                "empreinte_carbonne" => $res->getEmpreinteCarbonne()
             ];
         }
 

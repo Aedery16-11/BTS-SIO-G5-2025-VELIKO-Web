@@ -38,6 +38,9 @@ class Reservation
     #[ORM\Column]
     private ?float $distance_km = null;
 
+    #[ORM\Column]
+    private ?float $empreinte_carbonne = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -154,6 +157,18 @@ class Reservation
     public function setDistanceKm(float $distance_km): static
     {
         $this->distance_km = $distance_km;
+
+        return $this;
+    }
+
+    public function getEmpreinteCarbonne(): ?float
+    {
+        return $this->empreinte_carbonne;
+    }
+
+    public function setEmpreinteCarbonne(float $empreinte_carbonne): static
+    {
+        $this->empreinte_carbonne = $empreinte_carbonne;
 
         return $this;
     }
