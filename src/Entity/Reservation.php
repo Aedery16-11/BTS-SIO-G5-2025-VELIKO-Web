@@ -35,6 +35,9 @@ class Reservation
     #[ORM\Column]
     private ?string $type = null;
 
+    #[ORM\Column]
+    private ?float $distance_km = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,5 +144,17 @@ class Reservation
         {
             return "Mécanique";
         }
+    }
+
+    public function getDistanceKm(): ?float
+    {
+        return $this->distance_km;
+    }
+
+    public function setDistanceKm(float $distance_km): static
+    {
+        $this->distance_km = $distance_km;
+
+        return $this;
     }
 }

@@ -100,6 +100,7 @@ class AppFixtures extends Fixture
             $reservation->setIdStationDepart($stations_debut_ids[$i % count($stations_debut_ids)]);
             $reservation->setIdStationArrivee($stations_arrivee_ids[$i % count($stations_arrivee_ids)]);
             $reservation->setType($i % 2 === 0 ? "mechanical" : "ebike");
+            $reservation->setDistanceKm(mt_rand(1, 20));
             $manager->persist($reservation);
         }
         $manager->flush();
