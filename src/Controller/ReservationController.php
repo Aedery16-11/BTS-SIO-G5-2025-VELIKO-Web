@@ -88,6 +88,15 @@ class ReservationController extends AbstractController
             $reservation->setIdStationArrivee($idStationFin);
             $reservation->setType($request->get('type'));
 
+            /** @var StationRepository $stationRepository */
+            $stationRepository = $this->entityManager->getRepository(Station::class);
+            $startLat =  $stationRepository->getLatLonById($idStationDepart)[0]["lat"];
+            $startLng =  $stationRepository->getLatLonById($idStationDepart)[0]["lon"];
+            $endLat =  $stationRepository->getLatLonById($idStationFin)[0]["lat"];
+            $endLng =  $stationRepository->getLatLonById($idStationFin)[0]["lon"];
+            $distance_km = $this->calculateDistanceInKm($startLat, $startLng, $endLat, $endLng);
+            $reservation->setDistanceKm($distance_km);
+
             // Vérifier que l'heure de fin est après l'heure de début
             if ($reservation->getHeureFin() < $reservation->getHeureDebut()) {
                 $request->getSession()->getFlashBag()->clear();
@@ -116,5 +125,30 @@ class ReservationController extends AbstractController
             'controller_name' => 'ReservationController',
             'stations' => $stations,
         ]);
+    }
+
+    public function calculateDistanceInKm(float $startLat, float $startLng, float $endLat, float $endLng, float $radius = 6371.0): float {
+        // Convertir les coordonnées en radians
+        $startLatRad = deg2rad($startLat);
+        $startLngRad = deg2rad($startLng);
+        $endLatRad = deg2rad($endLat);
+        $endLngRad = deg2rad($endLng);
+
+        // Différences entre les coordonnées
+        $deltaLat = $endLatRad - $startLatRad;
+        $deltaLng = $endLngRad - $startLngRad;
+
+        // Application de la formule de Haversine
+        $sinLat = sin($deltaLat / 2);
+        $sinLng = sin($deltaLng / 2);
+
+        $a = $sinLat * $sinLat +
+            cos($startLatRad) * cos($endLatRad) *
+            $sinLng * $sinLng;
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        // Retour de la distance en kilomètres
+        return $radius * $c;
     }
 }

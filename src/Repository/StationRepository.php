@@ -34,6 +34,16 @@ class StationRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
+    public function getLatLonById($idStation) //Récupère la latitude et la longitude d'une station par son ID
+    {
+        return $this->createQueryBuilder("s")
+            ->andWhere("s.station_id = :idStation")
+            ->setParameter("idStation", $idStation)
+            ->select("s.lat", "s.lon")
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Station[] Returns an array of Station objects
     //     */
