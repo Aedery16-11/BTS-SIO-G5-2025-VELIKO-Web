@@ -68,6 +68,7 @@
                     <p><span>Station d'arrivée :</span> {{ reservation.idStationArrivee }}</p>
                     {# Affiche le type de vélo de la réservation #}
                     <p><span>Type du vélo :</span> {{ reservation.type }}</p>
+                    <p><span>Distance parcourue (en km) : </span> {{ reservation.distance_km }}</p>
                 {# Formulaire pour annuler la réservation #}
                 <form method="POST" action="{{ path('app_cancel_reservation', {'id': reservation.id}) }}">
                     <button type="submit" class="btn btn-danger">Annuler</button>

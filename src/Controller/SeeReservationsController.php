@@ -54,7 +54,8 @@ class SeeReservationsController extends AbstractController
                 "heureFin" => $res->getHeureFin(),
                 "idStationDepart" => $stationRepository->getStationNameById($res->getIdStationDepart())[0]["name"],
                 "idStationArrivee" => $stationRepository->getStationNameById($res->getIdStationArrivee())[0]["name"],
-                "type" => $res->getClearType($res->getType())
+                "type" => $res->getClearType($res->getType()),
+                "distance_km" => $res->getDistanceKm(),
             ];
         }
 
